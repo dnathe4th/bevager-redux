@@ -1,0 +1,66 @@
+<html>
+<head>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js'></script>
+    <script type='text/javascript' src='//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js'></script>
+    <link rel='stylesheet' href='//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css'>
+</head>
+<body>
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            var table = $('#rums').DataTable({
+                'ajax': {
+                    'url': '/api/users/dnathe4th@gmail.com',
+                    'dataSrc': 'rums',
+                },
+                'columns': [
+                    { 'data': 'country' },
+                    { 'data': 'name' },
+                    { 'data': 'price' },
+                    { 'data': 'signed' },
+                    { 'data': 'available' },
+                ],
+                'paging': false
+            });
+
+            $('#unrequested').on('click', function (evt) {
+                if ($(evt.target).prop('checked')) {
+                    table.columns(3).search('UNREQUESTED').visible(false).draw();
+                    return;
+                }
+                table.columns(3).search('').visible(true).draw();
+            });
+
+            $('#available').on('click', function (evt) {
+                if ($(evt.target).prop('checked')) {
+                    table.columns(4).search('true').visible(false).draw();
+                    return;
+                }
+                table.columns(4).search('').visible(true).draw();
+            });
+
+            $("#unrequested").click();
+            $("#available").click();
+        });
+    </script>
+    <h2>RUMS</h2>
+
+    <div>
+        <input type='checkbox' name='unrequested' id='unrequested' value='1'/> <label for='unrequested'>Unrequested Rums Only</label>
+    </div>
+    <div>
+        <input type='checkbox' name='available' id='available' value='1'/> <label for='available'>Available Rums Only</label>
+    </div>
+
+    <table id='rums' class='display'>
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Signed</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>
