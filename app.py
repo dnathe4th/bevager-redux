@@ -1,8 +1,18 @@
+import logging
+
 from flask import Flask, jsonify, render_template
 
 from datastore import fetch_rums_for_user
 
+logging_handler = logging.FileHandler('/var/log/bevager/bevager.log')
+logging_handler.setLevel(logging.INFO)
+logging_handler.setFormatter(logging.Formatter(
+    '%(asctime)s %(levelname)s: %(message)s '
+    '[in %(pathname)s:%(lineno)d]'
+))
+
 app = Flask('bevager')
+app.logger.addHandler(logging_handler)
 
 
 @app.route('/health')

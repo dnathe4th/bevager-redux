@@ -1,13 +1,24 @@
 from celery import Celery
+from celery.schedules import crontab
 
 from bevager_cli import BevagerClient
 from datastore import persist_rum_for_user
 
-app = Celery('bevager', broker='redis://')
+
+CELERYBEAT_SCHEDULE = {
+    'load-rums-weekly': {
+        'task': 'tasks.load_rums',
+        'schedule': crontab(minute=5, hour=15, day_of_week='wednesday'),
+        'args': ('dnathe4th@gmail.com',),
+    },
+}
+
+app = Celery('bevager', broker='redis://localhost:7654')
 app.conf.update(
     CELERY_TASK_SERIALIZER='json',
     CELERY_ACCEPT_CONTENT=['json'],  # Ignore other content
     CELERY_ENABLE_UTC=True,
+    CELERYBEAT_SCHEDULE=CELERYBEAT_SCHEDULE,
 )
 
 

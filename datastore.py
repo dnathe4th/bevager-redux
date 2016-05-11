@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-client = MongoClient()
+client = MongoClient('localhost:56327', connect=False)
 db = client.bevager
 rums = db.rums
 
