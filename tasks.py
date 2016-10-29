@@ -8,7 +8,7 @@ from datastore import persist_rum_for_user
 CELERYBEAT_SCHEDULE = {
     'load-rums-weekly': {
         'task': 'tasks.load_rums',
-        'schedule': crontab(minute=5, hour=15, day_of_week='wednesday'),
+        'schedule': crontab(minute=16, hour=15,),
         'args': ('dnathe4th@gmail.com',),
     },
 }

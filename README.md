@@ -8,7 +8,7 @@ A www.bevager.com instance site, while appreciated, leaves quite a bit to be des
  - No multi-column sorting (country + name, or price + name)
  - No filtering by signature status
  - Note column content makes table unusable
- 
+
 By exporting bevager data (from the rendered table) and rendering into html ourselves we can apply whatever custom visualizations we desire.
 
 
@@ -47,7 +47,7 @@ This will trigger a single celery task to log into bevager and load the table of
 ## Assumptions
 Since the data import is done via [beautifulsoup] parsing of the html table on bevager.com, significant changes to the html will disrupt data import.
 Current assumptions about the shape of the table are:
- 
+
   - rows relating to rums are identified by presence of an `'item'` html class.
   - Country name is available from the first column, with whitespace stripped.
   - Rum name is available from the second column, with whitespace stripped.
@@ -55,7 +55,7 @@ Current assumptions about the shape of the table are:
   - Signature status is available in the fourth column, and is indicated by the text 'REQ' (unrequested), a 'fa-check' class (requested), or otherwise (pending).
   - Notes are available in the fifth column, with whitespace stripped.
   - Availability is determined by the presence of a 'historic-item' class on the entire row.
-  
+
 ## TODO's
  - Bevager data import is currently triggered by hand rather than scheduled as it should be.
  - Notes should be optionally rendered.
@@ -64,3 +64,4 @@ Current assumptions about the shape of the table are:
  - Notes should be submittable with persistance back to bevager.
  - Some form of authentication should exist.
  - Non-defaults for mongodb/redis should probably be used.
+ - Better deployment than '[master] dnathe4th@~/Experimental/bevager: rsync -a -v --exclude=.git/ . 52.34.133.96:./bevager-redux/'

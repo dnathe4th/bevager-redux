@@ -6,21 +6,31 @@
 </head>
 <body>
     <script type='text/javascript'>
-        $(document).ready(function () {
-            var table = $('#rums').DataTable({
-                'ajax': {
-                    'url': '/api/users/dnathe4th@gmail.com',
-                    'dataSrc': 'rums',
+        var table;
+
+        function createDatatable(dataURL) {
+            if ( $.fn.dataTable.isDataTable( '#rums' ) ) {
+                table.destroy();
+            }
+
+            return $('#rums').DataTable({
+                ajax: {
+                    url: dataURL,
+                    dataSrc: 'rums'
                 },
-                'columns': [
+                columns: [
                     { 'data': 'country' },
                     { 'data': 'name' },
                     { 'data': 'price' },
                     { 'data': 'signed' },
                     { 'data': 'available' },
                 ],
-                'paging': false
+                paging: false
             });
+        }
+
+        $(document).ready(function () {
+            table = createDatatable('/api/users/{{username}}');
 
             $('#unrequested').on('click', function (evt) {
                 if ($(evt.target).prop('checked')) {
@@ -38,6 +48,17 @@
                 table.columns(4).search('').visible(true).draw();
             });
 
+            $('#XOR').on('click', function (evt) {
+                if ($(evt.target).prop('checked')) {
+                    table = createDatatable('/api/global_unrequested');
+                    table.columns(3).search('UNREQUESTED').visible(false).draw();
+                    table.columns(4).search('true').visible(false).draw();
+                    return
+                }
+                table = createDatatable('/api/users/{{username}}');
+                return
+            });
+
             $("#unrequested").click();
             $("#available").click();
         });
@@ -49,6 +70,9 @@
     </div>
     <div>
         <input type='checkbox' name='available' id='available' value='1'/> <label for='available'>Available Rums Only</label>
+    </div>
+    <div>
+        <input type='checkbox' name='XOR' id='XOR' value='1'/> <label for='XOR'>XOR Rums Only</label>
     </div>
 
     <table id='rums' class='display'>
